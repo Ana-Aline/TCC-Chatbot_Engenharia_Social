@@ -1,6 +1,6 @@
 const axios = require('axios');
 
-async function createAttacker() {
+async function createAttacker(token) {
     try {
         const attackerData = {
             Name: "Rodrigo",
@@ -16,7 +16,7 @@ async function createAttacker() {
         };
         const headers = {
             'Content-Type': 'application/json',
-            'Authorization': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjb2RlIjoiVGFsdmV6IG7Do28gY2hlZ3VlaSBhb25kZSBwbGFuZWplaSBpci4gTWFzIGNoZWd1ZWksIHNlbSBxdWVyZXIsIGFvbmRlIG1ldSBjb3Jhw6fDo28gcXVlcmlhIGNoZWdhciwgc2VtIHF1ZSBldSBvIHNvdWJlc3NlIiwiaWF0IjoxNzEzNzkxMTE2LCJleHAiOjE3MTM4Nzc1MTZ9.ROLw9C9u_bYnLkvOhmcckjLAaem7W4CTtQUCEjK8yKY'
+            'Authorization': token
         };
         const response = await axios.post('http://localhost:3000/api/attacker/createAttacker', attackerData, { headers });
         const attackerId = response.data.id;
@@ -28,11 +28,28 @@ async function createAttacker() {
     }
 }
 
-async function createThread(){
+async function getToken(){
+    try {
+        const headers = {
+            'Content-Type': 'application/json'
+        }
+        const payload = {
+            codeSecret: "Talvez não cheguei aonde planejei ir. Mas cheguei, sem querer, aonde meu coração queria chegar, sem que eu o soubesse"
+        }
+        const response = await axios.post('http://localhost:3000/api/auth', payload, {headers});
+        return response.data.token;
+        
+    } catch (error) {
+        console.log(error);
+        throw error;
+    }
+}
+
+async function createThread(token){
     try{
         const headers = {
             'Content-Type': 'application/json',
-            'Authorization': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjb2RlIjoiVGFsdmV6IG7Do28gY2hlZ3VlaSBhb25kZSBwbGFuZWplaSBpci4gTWFzIGNoZWd1ZWksIHNlbSBxdWVyZXIsIGFvbmRlIG1ldSBjb3Jhw6fDo28gcXVlcmlhIGNoZWdhciwgc2VtIHF1ZSBldSBvIHNvdWJlc3NlIiwiaWF0IjoxNzEzNzkxMTE2LCJleHAiOjE3MTM4Nzc1MTZ9.ROLw9C9u_bYnLkvOhmcckjLAaem7W4CTtQUCEjK8yKY'
+            'Authorization': token
         };
         const response = await axios.post('http://localhost:3000/api/chatbot/createThread',{}, { headers });
         const threadId = response.data.id;
@@ -43,8 +60,29 @@ async function createThread(){
         throw error;
     }
 }
+async function createMessasge(token, Thread, sms) {
+    try{
+        const headers = {
+            'Content-Type': 'application/json',
+            'Authorization': token
+        };
+        const payload = {
+            thread: "Thread",
+            role: "user",
+            content: sms
+        }
+        const response = await axios.post('http://localhost:3000/api/chatbot/createMessage', payload, { headers });
+        const message = response.data.id;
+        console.log("Messagem:", message);
+        return message;
+    } catch (error) {
+        console.error("Erro ao criar a thread:", error);
+        throw error;
+    }
 
-async function createVictim() {
+}
+
+async function createVictim(token) {
     try {
         const victimData = {
             Name: "Maria",
@@ -62,7 +100,7 @@ async function createVictim() {
         };
         const headers = {
             'Content-Type': 'application/json',
-            'Authorization': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjb2RlIjoiVGFsdmV6IG7Do28gY2hlZ3VlaSBhb25kZSBwbGFuZWplaSBpci4gTWFzIGNoZWd1ZWksIHNlbSBxdWVyZXIsIGFvbmRlIG1ldSBjb3Jhw6fDo28gcXVlcmlhIGNoZWdhciwgc2VtIHF1ZSBldSBvIHNvdWJlc3NlIiwiaWF0IjoxNzEzNzkxMTE2LCJleHAiOjE3MTM4Nzc1MTZ9.ROLw9C9u_bYnLkvOhmcckjLAaem7W4CTtQUCEjK8yKY'
+            'Authorization': token
         };
         const response = await axios.post('http://localhost:3000/api/victim/createVictim', victimData, { headers });
         const victimId = response.data.id;
@@ -77,33 +115,31 @@ async function createVictim() {
 async function runSimulation() {
     try {
         // Gerar o token [falta]
+        const token = await getToken();
 
         // Criar o atacante e salvar o ID
-        const attackerId = await createAttacker();
+         const attackerId = await createAttacker(token);
 
-        // Criar a vítima e salvar o ID
-        const victimId = await createVictim();
+        // // Criar a vítima e salvar o ID
+         const victimId = await createVictim(token);
 
-        /* TEM QUE IMPLEMENTAR */
+        // /* TEM QUE IMPLEMENTAR */
 
-        //Criar thread para o atacante
-        const attackerThread = await createThread();
+        // //Criar thread para o atacante
+         const attackerThread = await createThread(token);
 
-        //Criar thread para a vítima
-        const victimThread = await createThread();
+        // //Criar thread para a vítima
+         const victimThread = await createThread(token);
 
-        console.log(attackerThread);
-        console.log();
-        console.log(victimThread);
-        //loop
-        /*
-        const attackerMessage = await createMessasge(attackerThread);
+        // //loop
+        
+        const attackerMessage = await createMessasge(token, attackerThread);
         await executeThread(attackerThread, attackerId); //dei a ordem para o atacante
         const attackerResponse = await getMessage(attackerThread);
 
         console.log(attackerResponse); //pega a resposta do atacante
 
-        const victimMessage = await createMessasge(victimThread);
+        /*const victimMessage = await createMessasge(victimThread);
         await executeThread(attackerThread, attackerId); //mandei a mensagem para a vítima
         const victimResponse = await getMessage(victimThread);
 

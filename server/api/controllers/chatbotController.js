@@ -34,4 +34,15 @@ async function createThread(req, res){
     }
 }
 
-module.exports = { captureLastIncomingMessage, sendMessage, createThread };
+async function createMessage(req, res){
+    console.log("Cheguei no controller do chat");
+    try {
+        const message = await whatsappService.createMessage(req);
+        res.status(200).json(message);
+    } catch (error) {
+        console.error("Erro criar menssagem:", error);
+        res.status(500).json({ error: "Erro criar menssagem" });  
+    }
+}
+
+module.exports = { captureLastIncomingMessage, sendMessage, createThread, createMessage };

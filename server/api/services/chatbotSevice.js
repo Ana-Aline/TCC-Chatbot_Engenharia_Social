@@ -50,21 +50,45 @@ async function sendMessage(req) {
 }
 
 async function createThread() {
-
+    
     const requestUrl = `${apiUrlOpen}/threads`;
     const headers = {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`,
-        'OpenAI-Beta': 'assistants=v1'
+        'OpenAI-Beta': 'assistants=v2'
     };
 
     try {
-        const response = await axios.post(requestUrl, { headers });
+        const response = await axios.post(requestUrl, {}, { headers });
         return response.data;
     } catch (error) {
-        console.error("Erro ao capturar a última mensagem recebida: controller service", error);
+        console.error("Erro ao criar thread: controller service", error);
         throw error;
     }
 }
 
-module.exports = { captureLastIncomingMessage, sendMessage };
+async function createMessage(req) {
+    console.log(req);
+    console.log("cheguei no service do chat");
+    const requestUrl = `${apiUrlOpen}/threads/${req.thread}/messages`;
+    const headers = {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`,
+        'OpenAI-Beta': 'assistants=v2'
+    };
+    const payload = {
+        'role': `${req.role}`,
+        'content': `${req.content}`
+    }
+    
+    try {
+        const response = await axios.post(requestUrl, payload, { headers });
+        return response.data;
+    } catch (error) {
+        console.error("Erro ao criar mensagem: controller service", error);
+        throw error;
+    }
+
+
+}
+module.exports = { captureLastIncomingMessage, sendMessage, createThread, createMessage };

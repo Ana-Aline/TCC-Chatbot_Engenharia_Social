@@ -41,6 +41,8 @@ module.exports = function (server) {
 
     protectedApi.use(verifyToken);
 
+    console.log("Cheguei no routes")
+
     const whatsappRouter = require('../api/validators/router/chatbotRouter');
     protectedApi.use('/chatbot', whatsappRouter);
 
