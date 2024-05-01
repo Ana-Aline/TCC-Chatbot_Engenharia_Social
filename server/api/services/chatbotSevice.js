@@ -119,7 +119,7 @@ async function messageThread(req){
     };
     try {
         const response = await axios.get(requestUrl, { headers });
-        console.log(response);
+        //console.log(response);
         return response.data;
         
     } catch (error) {

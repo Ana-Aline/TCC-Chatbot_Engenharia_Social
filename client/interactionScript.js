@@ -41,7 +41,7 @@ async function getToken(){
         return response.data.token;
         
     } catch (error) {
-        console.log(error);
+        console.error(error);
         throw error;
     }
 }
@@ -122,8 +122,8 @@ async function getMessage(token, thread){
             
             if(response !== undefined){
                 role = response.data.data[0].role;
-                console.log(`Olha aqui: ${role}`)
-                console.log(response.data.data[0].content[0].text.value); 
+               // console.log(`Olha aqui: ${role}`)
+              //  console.log(response.data.data[0].content[0].text.value); 
             } 
             //return response.data.content.text.value;
             //ESTÁ PEGANDO A ÚLTIMA MENSAGEM, MAS NÃO ESTÁ MANDANDO NO CHAT A MENSAGEM, POR ISSO RETORNA UNDEFINED
@@ -134,12 +134,10 @@ async function getMessage(token, thread){
         }
         await delay(3000);
     }
-    console.log("Vamos retornar");
     return response.data.data[0].content[0].text.value;
 }
 
 async function sendWhats(token, chatId, message, persona){
-    console.log("Cheguei aqui");
     const headers = {
         'Content-Type': 'application/json',
         'Authorization': token
@@ -150,12 +148,11 @@ async function sendWhats(token, chatId, message, persona){
         message: message
     }
     try{
-        console.log("Antes do axios");
         const response = await axios.post('http://localhost:3000/api/chatbot//send-message', payload, { headers });  
-        console.log("Depois do axios");
         if(response.status !== 200){
             return false;
         }
+        console.log("Enviado com sucesso");
         return true;
 
     } catch(error) {
@@ -199,7 +196,7 @@ async function runSimulation() {
         const attackerChat = "556296506861@c.us";
         const victimChat = "556291339173@c.us";
         // Gerar o token [falta]
-    /*    const token = await getToken();
+        const token = await getToken();
 
         // Criar o atacante e salvar o ID
         const attackerId = await createAttacker(token);
@@ -211,32 +208,36 @@ async function runSimulation() {
         const attackerThread = await createThread(token);
 
         // //Criar thread para a vítima
-        const victimThread = await createThread(token);*/
+        const victimThread = await createThread(token);
 
         // //loop
-        let token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjb2RlIjoiVGFsdmV6IG7Do28gY2hlZ3VlaSBhb25kZSBwbGFuZWplaSBpci4gTWFzIGNoZWd1ZWksIHNlbSBxdWVyZXIsIGFvbmRlIG1ldSBjb3Jhw6fDo28gcXVlcmlhIGNoZWdhciwgc2VtIHF1ZSBldSBvIHNvdWJlc3NlIiwiaWF0IjoxNzE0NTgwNDg1LCJleHAiOjE3MTQ2NjY4ODV9.IXAiUMcNnCyWk2y3qSsXyANcye27wNrnZrxGFUgYBic";
+        /*let token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjb2RlIjoiVGFsdmV6IG7Do28gY2hlZ3VlaSBhb25kZSBwbGFuZWplaSBpci4gTWFzIGNoZWd1ZWksIHNlbSBxdWVyZXIsIGFvbmRlIG1ldSBjb3Jhw6fDo28gcXVlcmlhIGNoZWdhciwgc2VtIHF1ZSBldSBvIHNvdWJlc3NlIiwiaWF0IjoxNzE0NTgwNDg1LCJleHAiOjE3MTQ2NjY4ODV9.IXAiUMcNnCyWk2y3qSsXyANcye27wNrnZrxGFUgYBic";
         let attackerThread = "thread_zlpB7Sh82xSbn9ZVvpAqg645";
-        let attackerId = "asst_NUR53IWsvNOGUdG80AuzM0t4";
-        let sms = "Inicie o ataque";
+        let attackerId = "asst_NUR53IWsvNOGUdG80AuzM0t4";*/
+        let sms = "Inicie o ataque enviando a primeria mensagem para sua vítima";
 
-        console.log("Execucao 2")
+        console.log("Execucao 2");
 
-        const attackerMessageId = await createMessasge(token, attackerThread, sms);
-        await executeThread(token, attackerThread, attackerId); //dei a ordem para o atacante
-        const attackerResponse = await getMessage(token, attackerThread);
+        let count = 0;
+        while(count < 10){
+            console.log(count);
+            await createMessasge(token, attackerThread, sms);
+            await executeThread(token, attackerThread, attackerId); //dei a ordem para o atacante
+            sms = await getMessage(token, attackerThread);
 
-        console.log(attackerResponse); //pega a resposta do atacante
-       
-       //enviar a mensagem do atacante para a vítima no whatsapp
-       console.log("Vamos enviar");
-       await sendWhats(token, victimChat, attackerResponse, "ATACANTE");
+        
+            //enviar a mensagem do atacante para a vítima no whatsapp
+            await sendWhats(token, victimChat, sms, "ATACANTE"); //O atacante envia a mensagem para a vítima
 
-        /*const victimMessage = await createMessasge(victimThread);
-        await executeThread(attackerThread, attackerId); //mandei a mensagem para a vítima
-        const victimResponse = await getMessage(victimThread);
 
-        console.log(victimResponse); //pega a resposta da vítima
-        */
+            await createMessasge(token, victimThread, sms);
+            await executeThread(token, victimThread, victimId); //mandei a mensagem para a vítima
+            sms = await getMessage(token, victimThread);
+
+            await sendWhats(token, attackerChat, sms, "VITIMA");
+            count++;
+        }
+
 
     } catch (error) {
         console.error("Erro durante a execução da simulação:");
