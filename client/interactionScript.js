@@ -60,26 +60,66 @@ async function createThread(token){
         throw error;
     }
 }
-async function createMessasge(token, Thread, sms) {
+async function createMessasge(token, thread, sms) {
     try{
         const headers = {
             'Content-Type': 'application/json',
             'Authorization': token
         };
         const payload = {
-            thread: "Thread",
+            thread: thread,
             role: "user",
             content: sms
         }
         const response = await axios.post('http://localhost:3000/api/chatbot/createMessage', payload, { headers });
         const message = response.data.id;
-        console.log("Messagem:", message);
+
         return message;
     } catch (error) {
-        console.error("Erro ao criar a thread:", error);
+        console.error("Erro ao criar a mensagem:", error);
         throw error;
     }
 
+}
+async function executeThread(token, thread, personId) {
+    const headers = {
+        'Content-Type': 'application/json',
+        'Authorization': token
+    };
+    const payload = {
+        assistant_id: personId,
+        thread: thread
+    }
+    try{
+        const response = await axios.post('http://localhost:3000/api/chatbot/executeThread', payload, { headers });  
+
+        if(response.status !== 200){
+            return false;
+        }
+        return true;
+
+    } catch(error) {
+        console.error("Erro ao executar a thread: ", error);
+        throw error;
+    }
+}
+
+async function getMessage(token, thread){
+    const headers = {
+        'Content-Type': 'application/json',
+        'Authorization': token
+    };
+    const payload = {
+        thread: thread
+    }
+
+    try {
+        const response = await axios.get('http://localhost:3000/api/chatbot/messageThread', payload, { headers });  
+        return response.data.content.text.value;
+    } catch (error) {
+        console.error("Erro ao capturar a mensagem: ", error);
+        throw error; 
+    }
 }
 
 async function createVictim(token) {
@@ -115,29 +155,35 @@ async function createVictim(token) {
 async function runSimulation() {
     try {
         // Gerar o token [falta]
-        const token = await getToken();
+//        const token = await getToken();
 
         // Criar o atacante e salvar o ID
-         const attackerId = await createAttacker(token);
+//         const attackerId = await createAttacker(token);
 
         // // Criar a vítima e salvar o ID
-         const victimId = await createVictim(token);
+ //        const victimId = await createVictim(token);
 
         // /* TEM QUE IMPLEMENTAR */
 
         // //Criar thread para o atacante
-         const attackerThread = await createThread(token);
+//         const attackerThread = await createThread(token);
 
         // //Criar thread para a vítima
-         const victimThread = await createThread(token);
+//         const victimThread = await createThread(token);
 
         // //loop
-        
-        const attackerMessage = await createMessasge(token, attackerThread);
-        await executeThread(attackerThread, attackerId); //dei a ordem para o atacante
-        const attackerResponse = await getMessage(attackerThread);
+        let token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjb2RlIjoiVGFsdmV6IG7Do28gY2hlZ3VlaSBhb25kZSBwbGFuZWplaSBpci4gTWFzIGNoZWd1ZWksIHNlbSBxdWVyZXIsIGFvbmRlIG1ldSBjb3Jhw6fDo28gcXVlcmlhIGNoZWdhciwgc2VtIHF1ZSBldSBvIHNvdWJlc3NlIiwiaWF0IjoxNzE0NDk2MDMwLCJleHAiOjE3MTQ1ODI0MzB9.ZNchSvQJbxxm0IalvEq-eOF3bBqhlQ34Ouolf4Q7LCQ";
+        let attackerThread = "thread_zlpB7Sh82xSbn9ZVvpAqg645";
+        let attackerId = "asst_NUR53IWsvNOGUdG80AuzM0t4";
+        let sms = "Inicie o ataque";
 
-        console.log(attackerResponse); //pega a resposta do atacante
+        console.log("Execucao 2")
+
+        const attackerMessageId = await createMessasge(token, attackerThread, sms);
+        await executeThread(token, attackerThread, attackerId); //dei a ordem para o atacante
+        const attackerResponse = await getMessage(token, attackerThread);
+
+       // console.log(attackerResponse); //pega a resposta do atacante
 
         /*const victimMessage = await createMessasge(victimThread);
         await executeThread(attackerThread, attackerId); //mandei a mensagem para a vítima

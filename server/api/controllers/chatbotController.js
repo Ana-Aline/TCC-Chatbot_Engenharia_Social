@@ -35,7 +35,6 @@ async function createThread(req, res){
 }
 
 async function createMessage(req, res){
-    console.log("Cheguei no controller do chat");
     try {
         const message = await whatsappService.createMessage(req);
         res.status(200).json(message);
@@ -45,4 +44,19 @@ async function createMessage(req, res){
     }
 }
 
-module.exports = { captureLastIncomingMessage, sendMessage, createThread, createMessage };
+async function executeThread(req, res){
+    console.log("Cheguei no controller do chat");
+    try {
+        const statusExecute = await whatsappService.executeThread(req);
+        res.status(200).json(statusExecute);
+    } catch (error) {
+        console.error("Erro ao executar a thread: ", error);
+        res.status(500).json({ error: "Erro ao executar a thread"});
+    }
+}
+
+async function messageThread(req, res){
+    //parei aqui
+}
+
+module.exports = { captureLastIncomingMessage, sendMessage, createThread, createMessage, executeThread };
