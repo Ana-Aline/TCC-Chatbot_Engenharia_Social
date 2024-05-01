@@ -90,7 +90,6 @@ async function createMessage(req) {
 }
 
 async function executeThread(req){
-    console.log("cheguei no service do chat");
     const requestUrl = `${apiUrlOpen}/threads/${req.body.thread}/runs`;
     const headers = {
         'Content-Type': 'application/json',
@@ -108,6 +107,25 @@ async function executeThread(req){
         console.error("Erro ao criar mensagem: service", error);
         throw error;
     }
-
 }
-module.exports = { captureLastIncomingMessage, sendMessage, createThread, createMessage, executeThread };
+
+async function messageThread(req){
+    console.log("cheguei no service do chat");
+    const requestUrl = `${apiUrlOpen}/threads/${req.headers.thread}/messages?limit=1&order=desc`;
+    const headers = {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`,
+        'OpenAI-Beta': 'assistants=v2'
+    };
+    try {
+        const response = await axios.get(requestUrl, { headers });
+        console.log(response);
+        return response.data;
+        
+    } catch (error) {
+        console.error("Erro ao criar mensagem: service", error);
+        throw error;
+    }
+}
+
+module.exports = { captureLastIncomingMessage, sendMessage, createThread, createMessage, executeThread, messageThread };
