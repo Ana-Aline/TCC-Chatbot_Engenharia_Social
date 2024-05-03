@@ -1,5 +1,5 @@
 const axios = require('axios');
-const Attacker = require('../model/attackerModel');
+const Attacker = require('../validators/models/attackerModel');
 const apiUrl = "https://api.openai.com/v1";
 
 async function createAssistant(newAttacker){

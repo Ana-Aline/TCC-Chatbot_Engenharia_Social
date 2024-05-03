@@ -1,5 +1,5 @@
 const axios = require('axios');
-const Victim = require('../model/victimModel');
+const Victim = require('../validators/models/victimModel');
 const apiUrl = "https://api.openai.com/v1";
 
 async function createVictim(victimData) {

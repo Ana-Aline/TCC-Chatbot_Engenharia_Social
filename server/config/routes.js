@@ -26,19 +26,18 @@ module.exports = function (server) {
 
     );
 
-    const authRouter = require('../api/router/authRouter');
+    const authRouter = require('../api/validators/routers/authRouter');
     protectedApi.use('/', authRouter);
 
-    //protectedApi.use(token.verifyToken(req, res, next));
     protectedApi.use(verifyToken);
 
-    const whatsappRouter = require('../api/router/chatbotRouter');
+    const whatsappRouter = require('../api/validators/routers/chatbotRouter');
     protectedApi.use('/chatbot', whatsappRouter);
 
-    const victimRouter = require('../api/router/victimRouter');
+    const victimRouter = require('../api/validators/routers/victimRouter');
     protectedApi.use('/victim', victimRouter);
 
-    const attackerRouter = require('../api/router/attackerRouter');
+    const attackerRouter = require('../api/validators/routers/attackerRouter');
     protectedApi.use('/attacker', attackerRouter);
 
     //configura o servidor para servir arquivos estáticos localizados no diretório public

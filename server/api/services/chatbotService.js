@@ -5,14 +5,14 @@ const idInstance_atac = process.env.GREEN_INSTANCE_ID_ATACANTE;
 const apiTokenInstance_atac = process.env.GREEN_TOKEN_ATACANTE;
 const idInstance_vit = process.env.GREEN_INSTANCE_ID_VITIMA;
 const apiTokenInstance_vit = process.env.GREEN_TOKEN_VITIMA;
-const message = require('../model/chatbotModel');
+const message = require('../validators/models/chatbotModel.js');
 const apiUrl = "https://api.greenapi.com";
 const apiUrlOpen = "https://api.openai.com/v1";
 const minutes = 1440;
 
 async function captureLastIncomingMessage(req) {
 
-    const requestUrl = `${apiUrl}/waInstance${idInstance_vit}/lastIncomingMessages/${apiTokenInstance_vit}?minutes=${minutes}`;
+    let requestUrl = `${apiUrl}/waInstance${idInstance_vit}/lastIncomingMessages/${apiTokenInstance_vit}?minutes=${minutes}`;
     if(req.persona == "ATACANTE"){
         requestUrl = `${apiUrl}/waInstance${idInstance_atac}/sendMessage/${apiTokenInstance_atac}`;
     }  
@@ -27,7 +27,7 @@ async function captureLastIncomingMessage(req) {
 }
 
 async function sendMessage(req) {
-    var requestUrl = `${apiUrl}/waInstance${idInstance_vit}/sendMessage/${apiTokenInstance_vit}`;
+    let requestUrl = `${apiUrl}/waInstance${idInstance_vit}/sendMessage/${apiTokenInstance_vit}`;
     if(req.persona == "ATACANTE"){
         requestUrl = `${apiUrl}/waInstance${idInstance_atac}/sendMessage/${apiTokenInstance_atac}`;
     }  
@@ -109,7 +109,6 @@ async function executeThread(req){
 }
 
 async function messageThread(req){
-    console.log("cheguei no service do chat");
     const requestUrl = `${apiUrlOpen}/threads/${req.headers.thread}/messages?limit=1&order=desc`;
     const headers = {
         'Content-Type': 'application/json',

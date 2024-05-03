@@ -1,5 +1,5 @@
 const { sendErrorsFromDB, authorize } = require('../services/authService');
-const Auth = require('../model/authModel')
+const Auth = require('../validators/models/authModel')
 
 function postAuth(req, res) {
     const code = req.body.codeSecret || '';
