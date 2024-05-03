@@ -1,3 +1,3 @@
-const server = require('./server/config/server')
-require('./server/config/database')
-require('./server/config/routes')(server)
+const server = require('./server/config/server.js')
+require('./server/config/database.js')
+require('./server/config/routes.js')(server)

@@ -5,7 +5,7 @@ const idInstance_atac = process.env.GREEN_INSTANCE_ID_ATACANTE;
 const apiTokenInstance_atac = process.env.GREEN_TOKEN_ATACANTE;
 const idInstance_vit = process.env.GREEN_INSTANCE_ID_VITIMA;
 const apiTokenInstance_vit = process.env.GREEN_TOKEN_VITIMA;
-const message = require('../validators/model/chatbotModel');
+const message = require('../model/chatbotModel');
 const apiUrl = "https://api.greenapi.com";
 const apiUrlOpen = "https://api.openai.com/v1";
 const minutes = 1440;
@@ -21,7 +21,7 @@ async function captureLastIncomingMessage(req) {
         const response = await axios.get(requestUrl);
         return response.data;
     } catch (error) {
-        console.error("Erro ao capturar a última mensagem recebida: service", error);
+        console.error("Error capturing the last received message: service", error);
         throw error;
     }
 }
@@ -31,7 +31,6 @@ async function sendMessage(req) {
     if(req.persona == "ATACANTE"){
         requestUrl = `${apiUrl}/waInstance${idInstance_atac}/sendMessage/${apiTokenInstance_atac}`;
     }  
-    console.log("ANAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAa")
     const headers = {
         'Content-Type': 'application/json'
     };
@@ -44,7 +43,7 @@ async function sendMessage(req) {
         const response = await axios.post(requestUrl, payload, { headers });
         return response.data;
     } catch (error) {
-        console.error("Erro ao enviar mensagem: controller service", error);
+        console.error("Error sending message: service.", error);
         throw error;
     }
 }
@@ -62,7 +61,7 @@ async function createThread() {
         const response = await axios.post(requestUrl, {}, { headers });
         return response.data;
     } catch (error) {
-        console.error("Erro ao criar thread: controller service", error);
+        console.error("Error creating thread: service", error);
         throw error;
     }
 }
@@ -84,7 +83,7 @@ async function createMessage(req) {
         const response = await axios.post(requestUrl, payload, { headers });
         return response.data;
     } catch (error) {
-        console.error("Erro ao criar mensagem: service", error);
+        console.error("Error creating message: service", error);
         throw error;
     }
 }
@@ -104,7 +103,7 @@ async function executeThread(req){
         return response.data;
         
     } catch (error) {
-        console.error("Erro ao criar mensagem: service", error);
+        console.error("Error creating message: service", error);
         throw error;
     }
 }
@@ -119,11 +118,10 @@ async function messageThread(req){
     };
     try {
         const response = await axios.get(requestUrl, { headers });
-        //console.log(response);
         return response.data;
         
     } catch (error) {
-        console.error("Erro ao criar mensagem: service", error);
+        console.error("Error creating message: service", error);
         throw error;
     }
 }

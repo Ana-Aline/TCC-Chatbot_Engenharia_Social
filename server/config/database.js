@@ -5,12 +5,14 @@ mongoose.Promise = require("bluebird")
 
 //if para saber se conecta no banco de dados local ou de produção
 if (args.production)
-    module.exports = mongoose.connect('mongodb://nome_banco:senha@servidor.com.br:27017/usuario' ) // Umbler
-else
+    module.exports = mongoose.connect('mongodb://nome_banco:senha@servidor.com.br:27017/usuario');
+    
+else {
     mongoose.set('strictQuery', false)
     mongoose.connect( 'mongodb://127.0.0.1:27017/banco_dados', { useNewUrlParser: true, useUnifiedTopology: true })
         .then(() => console.log( 'Database Connected' ))
         .catch(err => console.log( err ));
+}
 
 //Mensagens de erros personalizadas que o banco pode estourar
 mongoose.Error.messages.general.required = "O campo '{PATH}' é obrigatório."

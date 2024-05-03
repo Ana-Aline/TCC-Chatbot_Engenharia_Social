@@ -6,7 +6,7 @@
         "Name": "Rodrigo",
         "Sex": "Masculino",
         "Profession": "Engenheiro Social",
-        "Personality": "Rodrigo é carismático, persuasivo e observadoro. Ele tem uma habilidade natural para se comunicar e manipular as pessoas. Sua empatia e capacidade de criar rapport permitem que ele conquiste a confiança das pessoas facilmente",
+        "Personality": "Rodrigo é carismático, persuasivo e observador. Ele tem uma habilidade natural para se comunicar e manipular as pessoas. Sua empatia e capacidade de criar rapport permitem que ele conquiste a confiança das pessoas facilmente",
         "Interests": "tem interesse em psicologia, comportamento humano e segurança da informação. Ele gosta de estudar técnicas de persuasão, linguagem corporal e análise comportamental",
         "Background": "possui formação em Computação. Ele começou sua carreira trabalhando em empresas de consultoria em segurança cibernética, onde desenvolveu suas habilidades em engenharia social.",
         "Skills": "ele é especialista em técnicas de engenharia social, incluindo pretexting, phishing, elicitação e manipulação psicológica. Ele é capaz de identificar pontos fracos e vulnerabilidades nas pessoas e explorá-las para obter informações sensíveis.",
@@ -18,7 +18,7 @@
     "victim": {
         "Name": "Maria",
         "Age": 50,
-        "Sex": "Feminimo",
+        "Sex": "Feminino",
         "Profession": "Dona de Casa",
         "Personality": "Maria é uma pessoa gentil, carinhosa e tranquila. Ela valoriza muito a família e os amigos, e gosta de passar seu tempo conversando com eles e compartilhando histórias. No entanto, ela tende a ser um pouco esquecida e pode se confundir facilmente com novas tecnologias.",
         "InterestsHobbies": "Maria gosta de passar seu tempo livre fazendo tricô, jardinagem e assistindo televisão. Ela também adora cozinhar e experimentar novas receitas. Além disso, ela é uma ávida leitora e costuma passar horas lendo seus livros favoritos.",

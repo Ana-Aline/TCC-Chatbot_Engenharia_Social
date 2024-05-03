@@ -5,8 +5,8 @@ async function createAttacker(req, res) {
         const newAttacker = await attackerService.createAttacker(req.body);
         res.status(201).json(newAttacker);
     } catch (error) {
-        console.error("Erro ao criar perfil do atacante:", error);
-        res.status(500).json({ error: "Erro ao criar perfil do atacante" });
+        console.error("Error creating attacker profile:", error);
+        res.status(500).json({ error: "Error creating attacker profile" });
     }
 }
 

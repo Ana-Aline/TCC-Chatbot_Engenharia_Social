@@ -1,6 +1,5 @@
-//recebe a solicitação e toma decisão usando o serviço de autenticação
 const { sendErrorsFromDB, authorize } = require('../services/authService');
-const Auth = require('../validators/model/authModel')
+const Auth = require('../model/authModel')
 
 function postAuth(req, res) {
     const code = req.body.codeSecret || '';

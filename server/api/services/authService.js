@@ -11,15 +11,15 @@ function sendErrorsFromDB(res, dbErrors) {
 function authorize(code) {
     return new Promise((resolve, reject) => {
         if (!code) {
-            reject({ message: "É obrigatório informar o código de acesso." });
+            reject({ message: "It is mandatory to provide the access code!" });
         }
 
-        let token = "ana";
+        let token = "";
         if (code == process.env.TOKEN_SECRET) {
             token = jwt.sign({ code }, process.env.TOKEN_SECRET, { expiresIn: process.env.TOKEN_EXPIRATION });
             resolve(token);
         } else {
-            reject({ message: "Acesso negado." });
+            reject({ message: "Access denied." });
         }
     });
 }

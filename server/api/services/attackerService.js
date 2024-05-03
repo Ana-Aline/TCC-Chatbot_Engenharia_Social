@@ -1,19 +1,6 @@
 const axios = require('axios');
-const Attacker = require('../validators/model/attackerModel');
+const Attacker = require('../model/attackerModel');
 const apiUrl = "https://api.openai.com/v1";
-
-async function createAttacker(attackerData) {
-    try {
-        // Cria uma nova instância do modelo attacker com os dados fornecidos
-        const newAttacker = new Attacker(attackerData);
-        // Salva a nova vítima no banco de dados
-        const savedAttacker = await newAttacker.save();
-        return createAssistant(savedAttacker);
-    } catch (error) {
-        console.error("Erro ao criar perfil de vítima no serviço:", error);
-        throw error;
-    }
-}
 
 async function createAssistant(newAttacker){
     const requestUrl = `${apiUrl}/assistants`;
@@ -37,7 +24,18 @@ async function createAssistant(newAttacker){
         const response = await axios.post(requestUrl, payload, { headers });
         return response.data;
     } catch (error) {
-        console.error("Erro ao enviar mensagem: controller service", error);
+        console.error("Error sending message: controller service: ", error);
+        throw error;
+    }
+}
+
+async function createAttacker(attackerData) {
+    try {
+        const newAttacker = new Attacker(attackerData);
+        const savedAttacker = await newAttacker.save();
+        return createAssistant(savedAttacker);
+    } catch (error) {
+        console.error("Error creating victim profile in the service:", error);
         throw error;
     }
 }
